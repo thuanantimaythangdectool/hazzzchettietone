@@ -1,160 +1,410 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
+import requests
+import os, sys, json, re
+from time import sleep
+session = requests.Session()
+import os, sys, re, json
+from time import sleep
+import random
+from datetime import datetime
+import requests
+from threading import Thread
+import uuid
+from datetime import datetime
+from pystyle import Add, Center, Anime, Colors, Colorate, Write, System
+os.system("cls")
+def likepage(cookies,fb_dtsg,idpagecanthick):
+    try:
+        idpro5=cookies.split("i_user=")[1].split(';')[0]
+        fheaders= {
+             'authority': 'www.facebook.com',
+             'accept': '*/*',
+             'accept-language': 'vi-VN',
+             'cookie': cookies,
+             'origin': 'https://www.facebook.com',
+             'referer': 'https://www.facebook.com'+idpro5,
+             'sec-ch-prefers-color-scheme': 'dark',
+             'sec-ch-ua': '"Google Chrome";v="107", "Chromium";v="107", "Not=A?Brand";v="24"',
+             'sec-ch-ua-mobile': '?0',
+             'sec-ch-ua-platform': '"Windows"',
+             'sec-fetch-dest': 'empty',
+             'sec-fetch-mode': 'cors',
+             'sec-fetch-site': 'same-origin',
+             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
+             'viewport-width': '979',
+             'x-fb-friendly-name': 'AdditionalProfilePlusCreationMutation',
+             'x-fb-lsd': 'ZM7FAk6cuRcUp3imwqvHTY',
+             'viewport-width': '1366',}
+        datas = {
+                'av': idpro5,
+                '__user': idpro5,
+                'fb_dtsg': fb_dtsg,
+                'jazoest': '25381',
+                'variables': '{"input":{"is_tracking_encrypted":false,"page_id":"'+idpagecanthick+'","source":null,"tracking":null,"actor_id":"'+idpro5+'","client_mutation_id":"1"},"scale":1}',
+                'doc_id': '4867271226642619',
+        }
+        response = requests.post('https://www.facebook.com/api/graphql/', headers=fheaders, data=datas).json()
+        return True
+    except:
+        return False
+def reaction(fb_dtsg,cookies,id_post,type,proxy):
+        idfb=cookies.split('i_user=')[1].split(";")[0]
+        jazoest='25384'
+        headers = {
+                'authority': 'www.facebook.com',
+                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+                'accept-language': 'vi',
+                'cookie': cookies,
+                'sec-ch-prefers-color-scheme': 'light',
+                'sec-ch-ua': '"Chromium";v="106", "Google Chrome";v="106", "Not;A=Brand";v="99"',
+                'sec-ch-ua-mobile': '?0',
+                'sec-ch-ua-platform': '"Windows"',
+                'sec-fetch-dest': 'document',
+                'sec-fetch-mode': 'navigate',
+                'sec-fetch-site': 'none',
+                'sec-fetch-user': '?1',
+                'upgrade-insecure-requests': '1',
+                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36',
+                'viewport-width': '1366',
+            }
+        if type == 'LIKE':
+            reac = '1635855486666999'
+        elif type ==  'LOVE':
+            reac  =  '1678524932434102'
+        elif type ==  'CARE':
+            reac = '613557422527858'
+        elif type ==  'HAHA':
+            reac = '115940658764963'
+        elif type ==  'WOW':
+            reac = '478547315650144'
+        elif type ==  'SAD':
+            reac = '908563459236466'
+        elif type ==  'ANGRY':
+            reac = '444813342392137'
+        try:
+            if len(proxy) >= 5:
+                if proxy.count(":") == 3:
+                    pr = proxy.split(":")
+                    pr = "%s:%s@%s:%s"%(pr[2], pr[3], pr[0], pr[1])
+                else:
+                    pr = proxy
+                choose = "http"
+                proxies = {"http": f"{choose}://{pr}" ,"https": f"{choose}://{pr}"}
+                url = requests.get('https://www.facebook.com/'+id_post, headers=headers, proxies=proxies, timeout=20).url
+                home = requests.get(url, headers=headers).text
+                feedback_id = home.split('{"__typename":"CommentComposerLiveTypingBroadcastPlugin","feedback_id":"')[1].split('","')[0]
+                data = {
+                    'fb_dtsg' : fb_dtsg,
+                    'jazoest' : jazoest,
+                    'fb_api_caller_class': 'RelayModern',
+                    'fb_api_req_friendly_name': 'CometUFIFeedbackReactMutation',
+                    'variables': '{"input":{"attribution_id_v2":"ProfileCometTimelineListViewRoot.react,comet.profile.timeline.list,via_cold_start,1667106623951,429237,190055527696468,","feedback_id":"'+feedback_id+'","feedback_reaction_id":"'+reac+'","feedback_source":"PROFILE","is_tracking_encrypted":true,"tracking":["AZXg8_yM_zhwrTY7oSTw1K93G-sycXrSreRnRk66aBJ9mWkbSuyIgNqL0zHEY_XgxepV1XWYkuv2C5PuM14WXUB9NGsSO8pPe8qDZbqCw5FLQlsGTnh5w9IyC_JmDiRKOVh4gWEJKaTdTOYlGT7k5vUcSrvUk7lJ-DXs3YZsw994NV2tRrv_zq1SuYfVKqDboaAFSD0a9FKPiFbJLSfhJbi6ti2CaCYLBWc_UgRsK1iRcLTZQhV3QLYfYOLxcKw4s2b1GeSr-JWpxu1acVX_G8d_lGbvkYimd3_kdh1waZzVW333356_JAEiUMU_nmg7gd7RxDv72EkiAxPM6BA-ClqDcJ_krJ_Cg-qdhGiPa_oFTkGMzSh8VnMaeMPmLh6lULnJwvpJL_4E3PBTHk3tIcMXbSPo05m4q_Xn9ijOuB5-KB5_9ftPLc3RS3C24_7Z2bg4DfhaM4fHYC1sg3oFFsRfPVf-0k27EDJM0HZ5tszMHQ"],"session_id":"'+str(uuid.uuid4())+'","actor_id":"'+idfb+'","client_mutation_id":"1"},"useDefaultActor":false,"scale":1}',
+                    'server_timestamps': 'true',
+                    'doc_id': '5703418209680126',
+                }
+                reaction = requests.post('https://www.facebook.com/api/graphql/', headers=headers, data=data, proxies=proxies, timeout=20).text
+            else:
+                url = requests.get('https://www.facebook.com/'+id_post, headers=headers).url
+                home = requests.get(url, headers=headers).text
+                feedback_id = home.split('{"__typename":"CommentComposerLiveTypingBroadcastPlugin","feedback_id":"')[1].split('","')[0]
+                data = {
+                    'fb_dtsg' : fb_dtsg,
+                    'jazoest' : jazoest,
+                    'fb_api_caller_class': 'RelayModern',
+                    'fb_api_req_friendly_name': 'CometUFIFeedbackReactMutation',
+                    'variables': '{"input":{"attribution_id_v2":"ProfileCometTimelineListViewRoot.react,comet.profile.timeline.list,via_cold_start,1667106623951,429237,190055527696468,","feedback_id":"'+feedback_id+'","feedback_reaction_id":"'+reac+'","feedback_source":"PROFILE","is_tracking_encrypted":true,"tracking":["AZXg8_yM_zhwrTY7oSTw1K93G-sycXrSreRnRk66aBJ9mWkbSuyIgNqL0zHEY_XgxepV1XWYkuv2C5PuM14WXUB9NGsSO8pPe8qDZbqCw5FLQlsGTnh5w9IyC_JmDiRKOVh4gWEJKaTdTOYlGT7k5vUcSrvUk7lJ-DXs3YZsw994NV2tRrv_zq1SuYfVKqDboaAFSD0a9FKPiFbJLSfhJbi6ti2CaCYLBWc_UgRsK1iRcLTZQhV3QLYfYOLxcKw4s2b1GeSr-JWpxu1acVX_G8d_lGbvkYimd3_kdh1waZzVW333356_JAEiUMU_nmg7gd7RxDv72EkiAxPM6BA-ClqDcJ_krJ_Cg-qdhGiPa_oFTkGMzSh8VnMaeMPmLh6lULnJwvpJL_4E3PBTHk3tIcMXbSPo05m4q_Xn9ijOuB5-KB5_9ftPLc3RS3C24_7Z2bg4DfhaM4fHYC1sg3oFFsRfPVf-0k27EDJM0HZ5tszMHQ"],"session_id":"'+str(uuid.uuid4())+'","actor_id":"'+idfb+'","client_mutation_id":"1"},"useDefaultActor":false,"scale":1}',
+                    'server_timestamps': 'true',
+                    'doc_id': '5703418209680126',
+                }
+                reaction = requests.post('https://www.facebook.com/api/graphql/', headers=headers, data=data).text
 
-# C extensions
-*.so
+            return True
+        except:
+            return False
 
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+def tzg(cookie,proxy):
+    headers = {
+        'authority': 'www.facebook.com',
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+        'accept-language': 'vi',
+        'cookie': cookie,
+        'sec-ch-prefers-color-scheme': 'light',
+        'sec-ch-ua': '"Chromium";v="106", "Google Chrome";v="106", "Not;A=Brand";v="99"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+        'sec-fetch-dest': 'document',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-site': 'none',
+        'sec-fetch-user': '?1',
+        'upgrade-insecure-requests': '1',
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36',
+        'viewport-width': '1366',
+    }
+    if len(proxy) >= 5:
+        if proxy.count(":") == 3:
+            pr = proxy.split(":")
+            pr = "%s:%s@%s:%s"%(pr[2], pr[3], pr[0], pr[1])
+        else:
+            pr = proxy
+        choose = "http"
+        proxies = {"http": f"{choose}://{pr}" ,"https": f"{choose}://{pr}"}
+        url_profile = requests.get('https://www.facebook.com/me', headers=headers, proxies=proxies, timeout=20).url
+        profile = requests.get(url_profile, headers=headers, proxies=proxies, timeout=20).text
+    else:
+        url_profile = requests.get('https://www.facebook.com/me', headers=headers).url
+        profile = requests.get(url_profile, headers=headers).text
+    try:    
+        fb_dtsg = profile.split('{"name":"fb_dtsg","value":"')[1].split('"},')[0]
+    except:
+        fb_dtsg = profile.split(',"f":"')[1].split('","l":null}')[0]
+    return fb_dtsg
+def cauhinh(cookies,tokentds):
+    idfb=cookies.split('i_user=')[1].split(";")[0]
+    run = requests.get(f'https://traodoisub.com/api/?fields=run&id={idfb}&access_token={tokentds}').json()
+    if 'success' in run:
+        print('</>',Colorate.Horizontal(Colors.blue_to_red,f' Cấu Hình Thành Công {idfb}!'),'</>')
+    else:
+        print(run['error'])
+        quit()
+def GetTDS(tk,mk):
+    session = requests.Session()
+    rf_acc='https://traodoisub.com/view/cauhinh'
+    rf_login='https://traodoisub.com/home/'
+    head_login={'Host':'traodoisub.com','accept':'*/*','content-length':'28','accept':'application/json, text/javascript, */*; q=0.01','user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36','content-type':'application/x-www-form-urlencoded; charset=UTF-8','x-requested-with':'XMLHttpRequest','sec-fetch-site':'same-origin','sec-fetch-mode':'cors','sec-fetch-dest':'empty','referer':'https://traodoisub.com/','accept-encoding':'gzip, deflate','accept-language':'vi-VN,vi;q=0.9,en-US;q=0.8,en;q=0.7',}
+    data_login={
+    'username': tk,
+    'password': mk,
+    }
+    log=session.post(url='https://traodoisub.com/scr/login.php', headers=head_login, data=data_login).text
+    if "success" in log:
+        print(f'TDS : {tk} ',end='')
+    else:
+        print('Đăng Nhập Thất Bại1')
+    sleep(0.2)
+    reg = log
+    m = session.cookies.get_dict()
+    ph = m['PHPSESSID']
+    cktds='PHPSESSID='+ph
+    cookies = {'PHPSESSID': ph}
+    headerss = {'authority': 'traodoisub.com','accept': 'application/json, text/javascript, */*; q=0.01','accept-language': 'en-US,en;q=0.9','referer': 'https://traodoisub.com/view/chtiktok/','sec-ch-ua': '" Not;A Brand";v="99", "Microsoft Edge";v="103", "Chromium";v="103"','sec-ch-ua-mobile': '?0','sec-ch-ua-platform': '"Windows"','sec-fetch-dest': 'empty','sec-fetch-mode': 'cors','sec-fetch-site': 'same-origin','user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.114 Safari/537.36 Edg/103.0.1264.49','x-requested-with': 'XMLHttpRequest',}
+    gettk=requests.get('https://traodoisub.com/view/setting/load.php', cookies=cookies, headers=headerss).json()
+    tokentds=gettk['tokentds']
+    head={'Host':'traodoisub.com','accept':'application/json, text/javascript, */*; q=0.01','user-agent':'Mozilla/5.0 (Linux; Android 10; Star 3 Build/QKQ1.200311.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/92.0.4515.115 Mobile Safari/537.36','x-requested-with':'XMLHttpRequest','sec-fetch-site':'same-origin','sec-fetch-mode':'cors','sec-fetch-dest':'empty','referer':rf_login,'accept-encoding':'gzip, deflate','accept-language':'vi-VN,vi;q=0.9,en-US;q=0.8,en;q=0.7','Cookie':cktds,}
+    check_tk=requests.get(url='https://traodoisub.com/scr/user.php', headers=head).json()['xu']
+    return cktds,tokentds
+def Delays(s,a):
+    for i in range(s,-1,-1):
+        print(f'Đang Delay {a} : {i}s                                                       ',end='\r')
+        sleep(1)
+def get_page(cookie,fb_dtsg,proxy,stt):
+    try:
+        jazoest='25382'
+        uid=cookie.split("c_user=")[1].split(';')[0]
+        a=requests.get(f"https://thanhlike.com/modun/tool/get_facebook.php?type=checklive&id={uid}").text
+        print(f"[T] > FB : {stt} | {uid} | {a.upper()} | " ,end='')
+        headers = {
+            'authority': 'www.facebook.com',
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'accept-language': 'vi,en;q=0.9,vi-VN;q=0.8,fr-FR;q=0.7,fr;q=0.6,en-US;q=0.5',
+            'cache-control': 'max-age=0',
+            'cookie': cookie,
+            'origin': 'https://www.facebook.com',
+            'referer': 'https://www.facebook.com',
+            'sec-ch-ua': '"Google Chrome";v="107", "Chromium";v="107", "Not=A?Brand";v="24"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'sec-fetch-dest': 'document',
+            'sec-fetch-mode': 'navigate',
+            'sec-fetch-site': 'none',
+            'sec-fetch-user': '?1',
+            'upgrade-insecure-requests': '1',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36',
+        }
+        if len(proxy) >= 5 :
+            if proxy.count(":") == 3:
+                pr = proxy.split(":")
+                pr = "%s:%s@%s:%s"%(pr[2], pr[3], pr[0], pr[1])
+            else:
+                pr = proxy
+            choose = "http"
+            proxies = {"http": f"{choose}://{pr}" ,"https": f"{choose}://{pr}"}
+            idpef = requests.post('https://www.facebook.com/api/graphql/', headers=headers, data={'fb_dtsg': fb_dtsg,'jazoest': jazoest,'variables': '{"showUpdatedLaunchpointRedesign":true,"useAdminedPagesForActingAccount":false,"useNewPagesYouManage":true}','doc_id': '5300338636681652'}, proxies=proxies, timeout=20).json()
+        else:
+            idpef = requests.post('https://www.facebook.com/api/graphql/', headers=headers, data={'fb_dtsg': fb_dtsg,'jazoest': jazoest,'variables': '{"showUpdatedLaunchpointRedesign":true,"useAdminedPagesForActingAccount":false,"useNewPagesYouManage":true}','doc_id': '5300338636681652'}).json()
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+        a = idpef['data']['viewer']['actor']['profile_switcher_eligible_profiles']['nodes']
+        sl = 0
+        listcoolkie=[]
+        Name=[]
+        for b in a:
+            sl +=1
+            uid = b['profile']['id']
+            name = b['profile']['name']
+            delegate_page_id = b['profile']['delegate_page_id']
+            listcoolkie.append(f'{cookie}; i_user={uid}')
+            Name.append(name)
+        print(f'Có : {len(Name)} Page')
+        return listcoolkie,Name,proxy,fb_dtsg
+    except:pass
+try:
+    GET_FILE_tds=open(f"TDS.txt").readline()
+except:
+    print('[T] >  Bạn Thiếu Dữ Liệu Vào TỆP TDS.txt  Định Dạng  TK|MK')
+    quit()
+tk=GET_FILE_tds.split("|")[0]
+mk=GET_FILE_tds.split("|")[1]
+cktds,tokentds=GetTDS(tk,mk)
+print("")
+#=========================[Các Biến]===============================
+listchucnang=[]
+XuDaLam=0   
+stt=0
+sttloi=0
+head_job={'Host':'traodoisub.com','accept':'application/json, text/javascript, */*; q=0.01','Cookie':cktds}
+Cookied=[]
+try:
+    GET_FILEs=open(f"FB.txt").readlines()
+except:
+    print('[T] >  Bạn Thiếu Dữ Liệu Vào TỆP FB.txt')
+    quit()
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-cover/
-
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-.pybuilder/
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-#   For a library or package, you might want to ignore these files since the code is
-#   intended to run in multiple environments; otherwise, check them in:
-# .python-version
-
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
-
-# poetry
-#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
-#   This is especially recommended for binary packages to ensure reproducibility, and is more
-#   commonly ignored for libraries.
-#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
-#poetry.lock
-
-# pdm
-#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
-#pdm.lock
-#   pdm stores project-wide configurations in .pdm.toml, but it is recommended to not include it
-#   in version control.
-#   https://pdm.fming.dev/#use-with-ide
-.pdm.toml
-
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
-
-# pytype static type analyzer
-.pytype/
-
-# Cython debug symbols
-cython_debug/
-
-# PyCharm
-#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
-#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
-#  and can be added to the global gitignore or merged into this file.  For a more nuclear
-#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
-#.idea/
+for i in range(len(GET_FILEs)):
+    a = GET_FILEs[i].split('\n')[0]
+    Cookied.append(a)
+#=========================[Các Biến]===============================
+stt444=0
+ALLCOOKIE=[]
+for z in Cookied:
+    stt444+=1
+    try:
+        cookies=z.split('|')[1]
+        proxy=z.split('|')[0]
+    except:
+        cookies=z
+        proxy='??'
+    try:
+        fb_z=tzg(cookies,proxy)
+        listcoolkie1,Name1,proxy1,fb_dtsg1=get_page(cookies,fb_z,proxy,stt444)
+        for o in range(len(Name1)):
+            ck=listcoolkie1[o]
+            na=Name1[o]
+            pr=proxy1
+            fbfb=fb_dtsg1
+            ALLCOOKIE.append(f'{ck}|{na}|{pr}|{fbfb}')
+    except:
+        print(f"[T]> Có Lỗi Sải Ra Với Cookie Số {stt444}")
+print('''
+[T]> Chọn Chức Năng :
+<1> Cảm Xúc
+<2> likepage''')
+checkchon=input("[T]> Nhập Lựa Chọn, Chọn nhiều Bằng Dấu '+' vd:(1+2+3) :\n===> Lựa Chọn Của Bạn : ")
+delaylaylay=int(input("[T]> Nhập Delay Mỗi Job (Gợi Ý 5s): "))
+delaylaylaychongblock=int(input("[T]> Nhập Chống Block (Gợi Ý 200s): "))
+checkchon=checkchon.split("+")
+if '1' in checkchon:
+    listchucnang.append("cx")
+if '2' in checkchon:
+    listchucnang.append("likepage")
+if len(listchucnang) == 0:
+    print("[T]> Không Có Lựa Chọn")
+    quit()
+random.shuffle(ALLCOOKIE)
+random.shuffle(ALLCOOKIE)
+while True:
+    for thuan in ALLCOOKIE:
+        if len(ALLCOOKIE) == 0:
+            print("[T]> Đã Bị chặn Tắt cả các Acc FB")
+        else:
+            cookies=thuan.split('|')[0]
+            NAME=thuan.split('|')[1]
+            proxy=thuan.split('|')[2]
+            fb_z=thuan.split('|')[3]
+            cauhinh(cookies,tokentds)
+            sttloi=0
+            ALLJOB=[]
+            hoanthanh=0
+            if "cx" in listchucnang:
+                try:
+                    while True:
+                        NhiemVu=requests.get(url='https://traodoisub.com/ex/reaction/load.php', headers=head_job)
+                        if 'error' in NhiemVu.json() and 'countdown' in NhiemVu.json() and int(NhiemVu.json()['countdown']) >= 50:
+                            print("[T]> TDS Đã Hết Job cx!")
+                            listchucnang.remove('cx')
+                            break
+                        if 'error' in NhiemVu.json() and 'countdown' in NhiemVu.json():
+                            countdown=int(NhiemVu.json()['countdown'])+3
+                            Delays(countdown,'Lấy Job cx')
+                        else :
+                            break
+                    for x in NhiemVu.json()['data']:
+                        id=x['id']
+                        type=x['type']
+                        ALLJOB.append(f'{id}|{type}')
+                except:pass
+            if "likepage" in listchucnang:
+                try:
+                    while True:
+                        NhiemVu=requests.get(url='https://traodoisub.com/ex/fanpage/load.php', headers=head_job)
+                        if 'error' in NhiemVu.json() and 'countdown' in NhiemVu.json() and int(NhiemVu.json()['countdown']) >= 50:
+                            print("[T]> TDS Đã Hết Job LikePage!")
+                            listchucnang.remove('likepage')
+                            break
+                        if 'error' in NhiemVu.json() and 'countdown' in NhiemVu.json():
+                            countdown=int(NhiemVu.json()['countdown'])+3
+                            Delays(countdown,'Lấy Job LikePage')
+                        else :
+                            break
+                    for x in NhiemVu.json()['data']:
+                        id=x['id']
+                        type=x['type']
+                        ALLJOB.append(f'{id}|LIKEPAGE')
+                except:pass
+            random.shuffle(ALLJOB)
+            random.shuffle(ALLJOB)
+            random.shuffle(ALLJOB)
+            print(f'[T] > Bú Được {len(ALLJOB)-5} job :> Bắt Đầu Làm!')
+            jobz=len(ALLJOB)-5
+            for ADU in ALLJOB:
+                id=ADU.split('|')[0]
+                type=ADU.split('|')[1]
+                if type == 'LIKEPAGE':
+                    print(f"Đang Làm Job LikePage ID :{id}                        ",end='\r')
+                    likepage(cookies,fb_z,id)
+                    NhanXu=requests.post(f'https://traodoisub.com/ex/fanpage/nhantien.php',headers=head_job,data={'id': id,'type': type}).text
+                    if NhanXu == "2":
+                        hoanthanh+=1
+                        sttloi=0
+                        XuDaLam+=900
+                        stt+=1
+                        Thongtin=requests.get(f'https://traodoisub.com/api/?fields=profile&access_token={tokentds}').json()['data']['xu']
+                        print(stt,Colorate.Horizontal(Colors.green_to_cyan,datetime.now().strftime(f'[%H:%M:%S] --> +900 Xu | {Thongtin} Xu | Like Page | {XuDaLam} Xu ')))
+                        Delays(delaylaylay,'Nghĩ Mỗi Job')
+                    else:
+                        sttloi+=1
+                        if sttloi >= 5:
+                            ALLCOOKIE.remove(thuan)
+                            print(Colorate.Horizontal(Colors.blue_to_red,"[T] > Đã Bị Chặn LikePage Đã Xóa Acc khỏi Đợi Chạy Này"))
+                            break
+                        print(f"[T] > Lỗi JOB",end='\r')
+                    if sttloi >= 5:break
+                else:
+                    print(f"Đang Làm Job cx ID :{id}                        ",end='\r')
+                    reaction(fb_z,cookies,id,type,proxy)
+                    NhanXu=requests.post(f'https://traodoisub.com/ex/reaction/nhantien.php',headers=head_job,data={'id': id,'type': type}).text
+                    if NhanXu == "2":
+                        hoanthanh+=1
+                        sttloi=0
+                        XuDaLam+=400
+                        stt+=1
+                        Thongtin=requests.get(f'https://traodoisub.com/api/?fields=profile&access_token={tokentds}').json()['data']['xu']
+                        print(stt,Colorate.Horizontal(Colors.green_to_cyan,datetime.now().strftime(f'[%H:%M:%S] --> +400 Xu | {Thongtin} Xu | {type} | {XuDaLam} Xu ')))
+                        Delays(delaylaylay,'Nghĩ Mỗi Job')
+                    else:
+                        sttloi+=1
+                        if sttloi >= 15:
+                            ALLCOOKIE.remove(thuan)
+                            print(Colorate.Horizontal(Colors.blue_to_red,"[T] > Đã Bị Chặn Cảm Xúc Đã Xóa Acc khỏi Đợi Chạy Này"))
+                            break
+                        print(f"[T] > Lỗi JOB",end='\r')
+                    if sttloi >= 15:break
+            print(f'[T]> Đã Hoàn Thành {hoanthanh}/{jobz}job                   ')
+    Delays(delaylaylaychongblock,'Nghỉ Ngơi Chống Block Tương Tác')
